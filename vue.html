@@ -18,7 +18,7 @@
         <div >不同方式的反转:{{reversed_message}}</div>
         <div v-bind:id="'list-'+id"></div>
         <p v-if="condition">你能否看到我取决于v-if中的condition</p>
-        <div id="click1"  @click="click1" :class="{active: isActive}"style="width: 200px;height: 200px; text-align: center;line-height: 100px;">嵌套点击1
+        <div  id="click1"  @click="click1" :class="{active: isActive, text_danger: hasError}"style="width: 200px;height: 200px; text-align: center;line-height: 100px;">嵌套点击1
             <div class = "click2" @click.stop = "click2">嵌套点击2</div>
         </div>
         <div>
@@ -28,7 +28,28 @@
             </p>
             <p>{{answer}}</p>
         </div>
-       
+       <div v-bind:style="style_model">绑定style</div>
+       <template v-if="condition">
+           <div>
+               <h1>标题</h1>
+               <p>内容</p>
+               <p>结尾</p>
+           </div>
+       </template>
+       <template v-if="input_type === 'money'">
+           <div>
+               <label>金钱:</label>
+               <input type="text" key="money">
+               
+           </div>
+       </template>
+       <template v-else>
+           <div>
+               <label>肉体:</label>
+               <input type="text" key="body">
+           </div>
+       </template>
+       <button @click = "button" >点击更改类型</button>
     </div>
     
 </body>
@@ -42,7 +63,13 @@
         condition:true,
         isActive:true,
         answer:"可以尝试填入0，有意外惊喜哦",
-        ask_number:""
+        ask_number:"",
+        hasError: true,
+        style_model:{
+            background:'red'
+        },
+        condition:true,
+        input_type :"money"
 };
     var vue = new Vue({
         el:"#app",
@@ -59,6 +86,13 @@
             }
         },
         methods: {
+            button:function(){
+                if(this.input_type === "money"){
+                    this.input_type = "body"
+                }else{
+                    this.input_type = "money"
+                }
+            },
             getAnswer:function(){
                 console.log(this.ask_number);
                 if(this.ask_number === ""){
