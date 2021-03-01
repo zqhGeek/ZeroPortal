@@ -50,11 +50,36 @@
            </div>
        </template>
        <button @click = "button" >点击更改类型</button>
+       <ul>
+           <li v-for="(item, index) in items" :key="index">{{item_data}}---{{index}}---{{item.message}}</li>
+       </ul>
+       <div>
+           <button @click="number +=1">加1</button>
+           <p>数学计数{{number}}</p>
+           <button @click = "action">弹出来..</button>
+           <button @click = "action2('行动起来',$event)">带着信息弹出来</button>
+       </div>
+       <input v-model="input_txt" type="text">
+       <p>输入的内容是:{{input_txt}}</p>
+       <input v-model = "check_number" type="checkbox" id = "1"value="1">
+       <input v-model = "check_number" type="checkbox" id = "2"value="2">
+       <input v-model = "check_number" type="checkbox" id = "3"value="3">
+       <p>选择项是:{{check_number}}</p>
+       <select v-model="select">
+           <option disabled value="">请选择</option>
+           <option value="A">A</option>
+           <option value="B">B</option>
+           <option value="C">C</option>
+       </select>
+       <p>选择项是:{{select}}</p>
     </div>
     
 </body>
 <script type="text/javascript">
     var message_data = { 
+        input_txt :"",
+        check_number:[], 
+        select:"",
         item_data : "监听数据相应--mvvm",
         Html : '<span style="color:red">这是一个植入的html代码</span>',
         color: 'red',
@@ -65,11 +90,16 @@
         answer:"可以尝试填入0，有意外惊喜哦",
         ask_number:"",
         hasError: true,
+        number: 0,
         style_model:{
             background:'red'
         },
         condition:true,
-        input_type :"money"
+        input_type :"money",
+        items:[
+            {message:"列表1"},
+            {message:"列表2"}
+        ]
 };
     var vue = new Vue({
         el:"#app",
@@ -86,6 +116,18 @@
             }
         },
         methods: {
+            action2:function(message,event){
+                alert(message)
+                if(event){
+                        alert(event.target.tagName)
+                    }
+            },
+            action:function(event){
+                    alert("吓死你！！！")
+                    if(event){
+                        alert(event.target.tagName)
+                    }
+            },
             button:function(){
                 if(this.input_type === "money"){
                     this.input_type = "body"
