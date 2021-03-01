@@ -72,6 +72,21 @@
            <option value="C">C</option>
        </select>
        <p>选择项是:{{select}}</p>
+           <button_counter></button_counter>
+           <button_counter></button_counter>
+           <button_counter></button_counter>
+           <!-- <blog-post title="标题1"></blog-post>
+           <blog-post title="标题2"></blog-post>
+           <blog-post title="标题3"></blog-post> -->
+           <div :style="{ fontSize: postFontSize + 'em' }">
+           <blog-post
+            v-for="post in posts"
+            v-bind:key="post.id"
+            v-bind:post="post"
+            v-on:smort-text="onSmortText"
+           >
+            </div>
+           </blog-post>
     </div>
     
 </body>
@@ -99,8 +114,36 @@
         items:[
             {message:"列表1"},
             {message:"列表2"}
-        ]
+        ],
+        count:0,
+        postFontSize:1,
+        posts:[
+        {id:1,title:"副标题1",content:"内容1",postFontSize:1},
+        {id:2,title:"副标题2",content:"内容2",postFontSize:1},
+        {id:3,title:"副标题3",content:"内容3",postFontSize:1}
+            ]
 };
+    Vue.component("blog-post",{
+        props:['post'],
+        template: `
+        <div class='blog-post'>
+            <div :style="{ fontSize: post.postFontSize + 'em' }">
+            <h3>{{post.title}}</h3>
+            <div v-html='post.content'></div>
+            </div>
+            <button @click = 'post.postFontSize +=0.1'>
+            字体变大
+            </button>
+            <button @click = "$emit('smort-text',post)">
+            字体变小
+            </button>
+        </div>`
+    })
+    Vue.component("button_counter",{
+        data:function(){
+            return message_data
+        },
+        template: '<button @click= "count++">点击次数:{{count}}</button>'})
     var vue = new Vue({
         el:"#app",
         data:message_data,
@@ -116,6 +159,9 @@
             }
         },
         methods: {
+            onSmortText:function(post){
+                post.postFontSize -=0.1
+            },
             action2:function(message,event){
                 alert(message)
                 if(event){
